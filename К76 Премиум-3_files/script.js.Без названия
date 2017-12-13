@@ -1,0 +1,63 @@
+$(document).ready(function () {
+    
+    
+    
+    $('.flexslider').flexslider({
+        animation: 'slide',
+        controlsContainer: '.flexslider'
+    });
+
+
+
+    $product_slide = 0;
+    $('.bx_slide_right').click(function () {
+        if ($product_slide * 81 < $('.product_slider').width() - 480) {
+            $product_slide++;
+            //$('.product_slider').css('margin-left', -81 * $product_slide);
+
+            $('.product_slider').animate({
+                left: -81 * $product_slide
+            }, 300, function () {
+            });
+
+
+        }
+    });
+    $('.bx_slide_left').click(function () {
+        if ($product_slide > 0) {
+            $product_slide--;
+            $('.product_slider').animate({
+                left: -81 * $product_slide
+            }, 300, function () {
+            });
+        }
+    });
+
+
+
+    $('.cnt').click(function () {
+        $image = $(this);
+        $url = $(this).html();
+        $url = $url.split("('")[1];
+        $url = $url.split("')")[0];
+        $image.closest('.bx_item_slider').find('.bx_bigimages').find('img').attr('src', $url);
+        $image.closest('.bx_item_slider').find('.bx_bigimages').find('a').attr('href', $url);
+        $('.bx_slide li').each(function () {
+            $(this).removeClass('bx_active');
+        });
+        $image.closest('li').addClass('bx_active');
+    });
+
+    $('.product_door img').mouseenter(function () {
+        $img = $(this);
+        $back = $img.data('back');
+        $front = $img.attr('src');
+        if ($back != '') {
+            $img.attr('src', $back);
+        }
+    });
+    $('.product_door img').mouseleave(function () {
+        $img = $(this);
+        $img.attr('src', $front);
+    });
+});

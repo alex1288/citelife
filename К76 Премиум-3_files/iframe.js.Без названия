@@ -1,0 +1,66 @@
+$(document).ready(function () {
+    $(".iframe").click(function (e) {
+        e.preventDefault();
+        $url = $(this).attr('href');
+        $($url).fadeIn('fast');
+        $('.overlay').fadeIn('fast');
+    });
+
+
+
+    $(document).keydown(function (e) {
+        if (e.keyCode === 27) {
+            $(".door-colors").fadeOut('fast');
+            $('.overlay').fadeOut('fast');
+        }
+    });
+
+    $(".closewindow").click(function (e) {
+        e.preventDefault();
+        $(".door-colors").fadeOut('fast');
+        $('.overlay').fadeOut('fast');
+    });
+
+    $(".overlay").click(function (e) {
+        $div = $(".door-colors"); // тут указываем ID элемента
+        if (!$div.is(e.target) // если клик был не по нашему блоку
+                && $div.has(e.target).length === 0) { // и не по его дочерним элементам
+            $(".door-colors").fadeOut('fast');
+            $('.overlay').fadeOut('fast');
+        }
+    });
+
+
+
+    $(".exec").click(function (e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        } else {
+            e.returnValue = false;
+        }
+        var item = $(this);
+        var item_old_val = item.val();
+        var form = item.closest('form');
+        form.find('.msg').remove();
+        $.ajax({
+            type: 'POST',
+            url: '/bitrix/templates/citylife/callback-handler.php',
+            data: form.serializeArray(),
+            beforeSend: function (data) {
+                item.val('Отправка...');
+            },
+            success: function (data) {
+                if (data == "true") {
+                    item.after('<span class="msg" style="color: rgb(246, 107, 8);">Спасибо! Через несколько минут мы свяжемся с Вами</span>');
+                    item.remove();
+                } else {
+                    item.after('<span class="msg" style="color: red;">Сообщение не отправлено. Пожалуйста, проверьте правильность введенных полей</span>');
+                }
+                item.val(item_old_val);
+            }
+        });
+    });
+
+
+});
+

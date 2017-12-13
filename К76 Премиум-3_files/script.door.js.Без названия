@@ -1,0 +1,22 @@
+$(document).ready(function () {
+    $("#hider").click(function () {
+        $("#hidden").slideToggle("slow");
+        return false;
+    });
+    $opened = false;
+    $("#toggler").click(function (e) {
+        e.preventDefault();
+
+        if (!$opened) {
+            $('#box').slideDown();
+            $('.detailtext').css('height', 'auto');
+            $("#toggler").html('Скрыть подробные характеристики');
+            $opened = true;
+        } else {
+            $('#box').slideUp();
+            $("#toggler").html('Подробные характеристики');
+            $opened = false;
+        }
+    });
+});
+
